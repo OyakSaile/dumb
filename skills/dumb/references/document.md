@@ -2,7 +2,7 @@
 
 Write it to `docs/dumb/<yyyy-mm-dd>-<feature-slug>.md`. Create `docs/dumb/` if it does not exist. If a file matching `docs/dumb/*-<feature-slug>.md` is already there, overwrite that file and keep its name (one document per feature, updated on every run). No file is written at `terms`.
 
-Length follows the parts, typically 600 to 1500 words. Every section is grounded in this project, with real names. The simplicity rules still apply sentence by sentence, and every rule, number and design choice carries its reason.
+There is no length limit. The document is as long as the parts need: never shorten a part, drop a layer or skip an example to save space. A six-part feature can run past 2,000 words and that is fine. Every section is grounded in this project, with real names. The simplicity rules still apply sentence by sentence, and every rule, number and design choice carries its reason.
 
 Headers below are shown in English, the canonical form; render them in the user's language.
 
