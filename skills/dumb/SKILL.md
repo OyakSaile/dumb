@@ -40,14 +40,14 @@ Core principle: **specific beats correct-but-generic.** Every sentence names som
 <1–2 sentences. Names the story / file / function / command being touched right now.>
 
 🎯 Por quê (o quadro maior)
-<The goal this serves. Where it sits: epic, roadmap, dependency chain.
- What breaks or gets harder without it. Why now and not later.>
+<At most 4 sentences: the goal this serves; where it sits (epic, roadmap,
+ dependency chain); what breaks or gets harder without it; why now and not later.>
 
 🪄 Analogia
-<One real-world analogy. Each part of the analogy maps to one part of this step.>
+<2–3 sentences. One real-world analogy, each part mapped to one part of this step.>
 
 👀 Olho de sênior
-<1–2 trade-offs or pitfalls a senior would watch for right here.>
+<2 bullets, one sentence each: trade-offs or pitfalls a senior would watch for right here.>
 
 🤔 Pra pensar
 <One question the user can answer to check they got it. Omit if it would be forced.>

@@ -6,20 +6,20 @@ Headers below are in Portuguese as an example; render them in the user's languag
 
 ```
 🧠 O que estamos fazendo
-<1–2 sentences naming the story / file / function / command>
+<1–2 sentences. Names the story / file / function / command being touched right now.>
 
 🎯 Por quê (o quadro maior)
-<goal served · where it sits (epic, roadmap, dependency chain) ·
- what breaks without it · why now>
+<At most 4 sentences: the goal this serves; where it sits (epic, roadmap,
+ dependency chain); what breaks or gets harder without it; why now and not later.>
 
 🪄 Analogia
-<one real-world analogy, parts mapped 1:1>
+<2–3 sentences. One real-world analogy, each part mapped to one part of this step.>
 
 👀 Olho de sênior
-<1–2 trade-offs or pitfalls right here>
+<2 bullets, one sentence each: trade-offs or pitfalls a senior would watch for right here.>
 
 🤔 Pra pensar
-<one check-your-understanding question; omit if forced>
+<One question the user can answer to check they got it. Omit if it would be forced.>
 
 ➡️ Próximo passo: <one line>
 ```
@@ -28,19 +28,19 @@ Headers below are in Portuguese as an example; render them in the user's languag
 
 ```
 🪄 Analogia
-<the real-world analogy first; the rest of the answer refers back to it>
+<3–4 sentences. The real-world analogy first; the rest of the answer refers back to it.>
 
 🧠 O que estamos fazendo
-<the step, told through the analogy; every technical word appears as
- "term (plain-words meaning)" the first time>
+<2–3 sentences. The step, told through the analogy; every technical word appears as
+ "term (plain-words meaning)" the first time.>
 
 🎯 Por quê
-<what goes wrong without it, in the analogy's terms, then in the project's terms.
- On a BMAD story this slot still names the epic, the stories it builds on and the
- story it blocks — in plain words, not numbers alone>
+<2–3 sentences: what goes wrong without it, in the analogy's terms, then in the
+ project's terms. On a BMAD story this slot still names the epic, the stories it
+ builds on and the story it blocks — in plain words, not numbers alone.>
 
 🤔 Pra pensar
-<one question answerable from the analogy>
+<One question answerable from the analogy.>
 
 ➡️ Próximo passo: <one line>
 ```
