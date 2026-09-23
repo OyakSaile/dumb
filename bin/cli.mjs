@@ -3,7 +3,7 @@ import { readFile } from "node:fs/promises";
 import { homedir } from "node:os";
 import { sep } from "node:path";
 import { stdin, stdout, stderr, exit } from "node:process";
-import { createInterface } from "node:readline/promises";
+import * as p from "@clack/prompts";
 import { AGENTS, AGENT_IDS } from "../src/agents.mjs";
 import { parseArgs, USAGE } from "../src/args.mjs";
 import { detectAgents, install, normalizeAgents, resolveTargets, uninstall } from "../src/install.mjs";
@@ -43,12 +43,38 @@ let scope = opts.scope ?? "global";
 
 const interactive = Boolean(stdin.isTTY) && !opts.yes;
 if (interactive) {
-  const rl = createInterface({ input: stdin, output: stdout });
-  try {
-    if (!opts.agents) agents = await askAgents(rl, detected);
-    if (!opts.scope) scope = await askScope(rl);
-  } finally {
-    rl.close();
+  p.intro(`total-dumb ${pkg.version} — /dumb explains what we're doing and why`);
+  if (detected.length) {
+    p.log.info(`Detected: ${detected.map((id) => AGENTS[id].displayName).join(", ")}`);
+  } else {
+    p.log.warn("No agents detected on this machine. Pick where to install anyway.");
+  }
+
+  if (!opts.agents) {
+    const picked = await p.multiselect({
+      message: "Which agents?",
+      options: AGENT_IDS.map((id) => ({
+        value: id,
+        label: AGENTS[id].displayName,
+        hint: detected.includes(id) ? "detected" : undefined,
+      })),
+      initialValues: detected.length ? detected : AGENT_IDS,
+      required: true,
+    });
+    if (p.isCancel(picked)) { p.cancel("Nothing installed."); exit(0); }
+    agents = AGENT_IDS.filter((id) => picked.includes(id));
+  }
+
+  if (!opts.scope) {
+    const where = await p.select({
+      message: opts.uninstall ? "Remove from where?" : "Where?",
+      options: [
+        { value: "global", label: "Global — this machine", hint: "~/.claude/skills, ~/.cursor/skills, ~/.codex/skills, ~/.config/opencode/skills" },
+        { value: "project", label: "Project — this repo", hint: ".claude/skills, .agents/skills" },
+      ],
+    });
+    if (p.isCancel(where)) { p.cancel("Nothing installed."); exit(0); }
+    scope = where;
   }
 }
 
@@ -62,35 +88,23 @@ if (agents.length === 0) {
 }
 
 const targets = resolveTargets({ agents, scope });
+const spinner = interactive ? p.spinner() : null;
+spinner?.start(opts.uninstall ? "Removing…" : "Installing…");
 let results;
 try {
   results = opts.uninstall
     ? await uninstall(targets, { dryRun: opts.dryRun })
     : await install(targets, { dryRun: opts.dryRun });
 } catch (error) {
+  spinner?.stop("Failed", 1);
   stderr.write(`${error.message}\n`);
   exit(1);
 }
+spinner?.stop(opts.uninstall ? "Removed" : "Installed");
 
 printSummary(results);
+if (interactive) p.outro(results.some((r) => r.status === "failed") ? "Some targets failed." : "Done.");
 exit(results.some((r) => r.status === "failed") ? 1 : 0);
-
-async function askAgents(rl, detected) {
-  stdout.write("\nWhich agents?\n");
-  AGENT_IDS.forEach((id, i) => {
-    stdout.write(`  ${i + 1}) ${AGENTS[id].displayName}${detected.includes(id) ? "  (detected)" : ""}\n`);
-  });
-  const fallback = detected.length ? detected : AGENT_IDS;
-  const suggested = fallback.map((id) => AGENT_IDS.indexOf(id) + 1).join(",");
-  const answer = await rl.question(`Numbers separated by commas [${suggested}]: `);
-  const picked = answer.split(",").map((n) => AGENT_IDS[Number(n.trim()) - 1]).filter(Boolean);
-  return picked.length ? AGENT_IDS.filter((id) => picked.includes(id)) : fallback;
-}
-
-async function askScope(rl) {
-  const answer = await rl.question("Where? (g)lobal for this machine, (p)roject for this repo [g]: ");
-  return answer.trim().toLowerCase().startsWith("p") ? "project" : "global";
-}
 
 function printSummary(results) {
   const verb = opts.uninstall ? "Removed" : "Installed";
@@ -102,5 +116,5 @@ function printSummary(results) {
     stdout.write(`  ${icon} ${names.padEnd(26)} ${where}  ${r.status}${r.error ? ` (${r.error})` : ""}\n`);
   }
   const didWrite = results.some((r) => r.status === "installed" || r.status === "updated");
-  if (!opts.uninstall && !opts.dryRun && didWrite) stdout.write("\nMid-task, type:  /dumb   /dumb zero   /dumb terms\n");
+  if (!opts.uninstall && !opts.dryRun && didWrite) stdout.write("\nMid-task, type:  /dumb   /dumb zero   /dumb senior\n");
 }

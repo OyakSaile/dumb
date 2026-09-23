@@ -5,7 +5,6 @@
 <p align="center">
   <img src="https://img.shields.io/badge/npm-total--dumb-CB3837?logo=npm&logoColor=white" alt="npm package total-dumb">
   <img src="https://img.shields.io/badge/node-%E2%89%A5%2018-5FA04E?logo=node.js&logoColor=white" alt="Node 18 or newer">
-  <img src="https://img.shields.io/badge/dependencies-0-4FD1C5" alt="zero dependencies">
   <img src="https://img.shields.io/badge/license-MIT-A78BFA" alt="MIT license">
 </p>
 
@@ -19,7 +18,7 @@ Coding agents are very good at doing the work and very bad at telling you why th
 
 `/dumb` is an [Agent Skill](https://agentskills.io) that answers that question from where you actually are. It reads the story, its epic and the code around the change, then explains in short sentences, one idea at a time, and offers to go deeper only if you want it. In your language.
 
-It works in **Claude Code, Cursor, Codex and OpenCode**, installs with one command, and has zero runtime dependencies.
+It works in **Claude Code, Cursor, Codex and OpenCode**, and installs with one command through a small interactive installer.
 
 ## What it looks like
 

@@ -161,7 +161,7 @@ README.md          # English, with a short Portuguese section
 LICENSE            # MIT
 ```
 
-Zero runtime dependencies. Node ≥ 18. ESM.
+One runtime dependency, `@clack/prompts`, for the interactive installer (amended 2026-09-23; v0.1.0 had none). Node ≥ 18. ESM.
 
 ## 6. Error handling
 
