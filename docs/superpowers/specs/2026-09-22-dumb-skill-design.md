@@ -40,12 +40,7 @@ skills/dumb/
 ```yaml
 ---
 name: dumb
-description: >-
-  Explain what we are doing right now and why, in plain language with a real-world
-  analogy, so the user learns instead of just watching. Use when the user invokes
-  /dumb, asks "why are we doing this?", "what is this for?", "I don't get it",
-  "explain this step", or seems lost mid-task (a BMAD story, a refactor, a bug fix,
-  any workflow). Levels: dev (default), zero (never seen this before), terms (glossary).
+description: Use when the user invokes /dumb or, in the middle of any task (a BMAD story, a refactor, a bug fix, a migration, a config change), asks why the current step exists or what it is for — "why are we doing this?", "what is this for?", "I don't get it", "explain this step", "não entendi", "por que isso?", "explica". Optional level after the name — dev (default), zero, terms.
 ---
 ```
 
@@ -83,7 +78,9 @@ The level is the first word after the skill name (`/dumb zero`), or inferred fro
 ➡️ Próximo passo: <one line: where the task resumes>
 ```
 
-**zero** — same content, reordered: `🪄 Analogia` first (it carries the explanation), then `🧠 O que`, `🎯 Por quê`, `🤔 Pra pensar`, `➡️ Próximo passo`. No `👀 Olho de sênior`. Every technical term appears as `term (plain-words meaning)` the first time.
+Each slot carries a sentence budget: 🧠 1–2 sentences · 🎯 at most 4 sentences · 🪄 2–3 sentences · 👀 2 bullets, one sentence each · 🤔 one question · ➡️ one line.
+
+**zero** — same content, reordered: `🪄 Analogia` first (it carries the explanation), then `🧠 O que`, `🎯 Por quê`, `🤔 Pra pensar`, `➡️ Próximo passo`. No `👀 Olho de sênior`. Every technical term appears as `term (plain-words meaning)` the first time. Slot budgets at this level: 🪄 3–4 sentences · 🧠 2–3 sentences · 🎯 2–3 sentences · 🤔 one question · ➡️ one line.
 
 **terms**
 
@@ -136,7 +133,7 @@ npx total-dumb --help | --version
 - With `--yes` and no detected agents and no `--agents`: exit 1 with a hint to pass `--agents`.
 - Installing is a recursive copy of `skills/dumb/` into `<target>/dumb/`, overwriting (idempotent; re-running updates).
 - Uninstalling removes `<target>/dumb/` only, never the parent.
-- Ends with a summary table: agent → path → `installed | updated | removed | skipped (not found)`, plus a one-line usage hint (`/dumb`, `/dumb zero`, `/dumb terms`).
+- Ends with a summary table: agent → path → `installed | updated | removed | skipped`, plus a one-line usage hint (`/dumb`, `/dumb zero`, `/dumb terms`).
 
 ### 5.2 Target paths
 
