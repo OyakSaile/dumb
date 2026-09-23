@@ -29,8 +29,8 @@ An agent is shipping features faster than anyone can read them, and the system d
 
    | Level | Aliases | Document | Chat ends with |
    |---|---|---|---|
-   | `dev` (default) | — | full | one offer line |
-   | `zero` | `eli5`, `beginner`, `junior` | full, bigger Glossary, an analogy per part | the check block, then stop |
+   | `dev` (default) | — | full | "read it first"; after the user has read it, one offer line |
+   | `zero` | `eli5`, `beginner`, `junior` | full, bigger Glossary, an analogy per part | "read it first"; after the user has read it, the check block, then stop |
    | `senior` | `pro`, `expert` | no Glossary, no analogies, trade-offs in the why | nothing |
    | `terms` | `termos`, `jargon`, `glossary` | none, chat only | nothing |
 
@@ -48,15 +48,14 @@ An agent is shipping features faster than anyone can read them, and the system d
 <3–5 short lines: what we're doing and why it matters, plain words.>
 
 📄 <path to the file that was written>
-
-<the level's ending, or nothing at `senior`>
+Read the whole document first. When you are done, say so and we go on from there.
 ```
 
-The document carries the depth. The chat carries the invitation. Never paste the document into the chat.
+At `senior` the last line is omitted. The document carries the depth. The chat carries the invitation. Never paste the document into the chat, and never ask a question or offer terms in this first reply: the user has not read the document yet.
 
 ## Dialogue
 
-When the user picks a term, answer in chat, about 80 words: one sentence of meaning, then how it works in this project naming a real file or function, then one tiny example. A wrong answer to the check question gets a different and simpler explanation, then one new question. "entendi" / "got it" closes with `➡️ Next step` and nothing else. Never offer a term the user already knows or already had explained, and stop asking the moment they turn back to the task.
+Questions come only after the user says they have read the document ("li", "read it", "done"). At that point the level's ending applies: `dev` sends the single offer line; `zero` sends the check block (terms to pick plus one comprehension question) and stops; `senior` continues the task with no questions. When the user picks a term, answer in chat, about 80 words: one sentence of meaning, then how it works in this project naming a real file or function, then one tiny example. A wrong answer to the check question gets a different and simpler explanation, then one new question. "entendi" / "got it" closes with `➡️ Next step` and nothing else. Never offer a term the user already knows or already had explained, and stop asking the moment they turn back to the task.
 
 ## When the task is a BMAD story
 
@@ -76,7 +75,8 @@ If the motivation is weak, unclear, or the step looks unnecessary, say so. Learn
 | A part described only as it exists here | Three layers: in general with the usual alternative, in this project, how it connects |
 | Stacked definitions, three `term (meaning)` pairs in a row | Name the term and move on; the Glossary defines it |
 | A chain of story IDs | One story back, one story forward, in plain words |
-| Explaining the offered terms at `zero` before the user asks | The first reply ends at the check block; wait |
+| Asking a question or offering terms before the user has read the document | The first reply ends at "read the whole document first"; questions come after they say they read it |
+| Explaining the offered terms at `zero` before the user asks | The check block offers; the user picks; then explain |
 | Quizzing a user who already said they get it, or who asked to continue | Stop asking the moment they turn back to the task |
 | Offering to define a term the user just used correctly | That user is `senior`; give trade-offs instead |
 | Replying in English to a user who wrote in another language | Language comes from the conversation and the project's docs |
