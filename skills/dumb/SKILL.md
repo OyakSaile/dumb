@@ -77,6 +77,6 @@ If the motivation is weak, unclear, or the step looks unnecessary, say so. Learn
 | A chain of story IDs | One story back, one story forward, in plain words |
 | Asking a question or offering terms before the user has read the document | The first reply ends at "read the whole document first"; questions come after they say they read it |
 | Explaining the offered terms at `zero` before the user asks | The check block offers; the user picks; then explain |
-| Quizzing a user who already said they get it, or who asked to continue | Stop asking the moment they turn back to the task |
+| Quizzing a user who already said they get it, or who asked to continue after the check | Stop asking the moment they turn back to the task; at `zero`, "I read it" still gets the check block once, even with "continue" in the same message |
 | Offering to define a term the user just used correctly | That user is `senior`; give trade-offs instead |
 | Replying in English to a user who wrote in another language | Language comes from the conversation and the project's docs |
