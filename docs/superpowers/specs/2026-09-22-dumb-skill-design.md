@@ -186,3 +186,17 @@ Zero runtime dependencies. Node ≥ 18. ESM.
 ## 8. Publishing
 
 `npm publish` from the repo root (`files` whitelist keeps the package small). The repo layout `skills/dumb/SKILL.md` is also what `npx skills add <github-user>/dumb` expects, so that install path works for free once the repo is on GitHub.
+
+## 9. v0.2.0 amendment (2026-09-23) — supersedes §4.2–§4.4 where they conflict
+
+Kayo tested v0.1.0 on a real project and rejected the output: a chat block that packed eight inline definitions, a convoluted analogy and a chain of story IDs. The redesign moves depth out of the chat and into a document, and makes the chat a short invitation.
+
+**Premise: everything has a why.** Every rule, number, acceptance criterion, pattern or design choice the skill mentions carries its reason in the same sentence or the next. If the reason is not recorded, the skill says so and labels its best guess.
+
+**Deliverable.** For every level except `terms`, the skill writes `docs/dumb/<yyyy-mm-dd>-<feature-slug>.md` in the project (template in `skills/dumb/references/document.md`): why this exists · the big picture (Mermaid `flowchart LR` with every edge labelled, plus a one-line ASCII fallback) · system design (Mermaid flowchart, current feature highlighted, planned links dotted) · the parts one by one (each: in general with the usual alternative, in this project with real files, how it connects today and in the planned future, a concrete example, ❌ doing it wrong, ✅ doing it right) · a sequence diagram for the main walk-through with the failure branch · common mistakes · check yourself (answers collapsed) · glossary · next step. Length follows the number of parts (measured 1.2k–2.4k words).
+
+**Chat.** 3–5 short lines plus the file path (≤ 100 words), then the level's ending. Simplicity rules everywhere: short sentences, one new term per sentence, no `term (meaning)` stacks, no story-ID chains, everyday analogies of two sentences at most.
+
+**Levels.** `dev` (default): full document, chat ends with one optional line offering to explain up to three terms. `zero` (`eli5`, `beginner`, `junior`): full document with a bigger glossary and an analogy per part; chat ends with a check block (terms to pick + one comprehension question) and stops; picked terms are explained in chat (~80 words each, real file/function, tiny example), a wrong answer gets a simpler explanation and a new question, "entendi/got it" closes with the next step. `senior` (`pro`, `expert`): document without glossary or analogies, trade-offs and alternatives in the why, ❌/✅ at design level; chat has no questions. `terms`: chat-only glossary, no file. Adaptive default: a fluent technical or trade-off question is answered as `senior`; "não entendi / I'm lost / why?" as `dev`; a term the user just used correctly is never offered.
+
+**Verification (2026-09-23).** Three subagent scenarios on the BMAD fixture — junior `zero` in Portuguese with two follow-up turns, fluent `senior` question in English, default `dev` in Portuguese followed by "segue" — all passed the structural checks: sections, ≥ 3 parts with three layers and ❌/✅, a reason on every rule, the three diagrams with labelled edges, glossary present or absent by level, dialogue stopping when the user continues. Chat replies measured 94–118 words.
