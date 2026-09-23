@@ -2,7 +2,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { execFile } from "node:child_process";
 import { promisify } from "node:util";
-import { mkdtemp } from "node:fs/promises";
+import { mkdir, mkdtemp, rm, writeFile } from "node:fs/promises";
 import { existsSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
@@ -55,6 +55,7 @@ test("cli --yes --global --agents claude installs into the fake home", async () 
   assert.ok(existsSync(join(home, ".claude/skills/dumb/SKILL.md")));
   assert.match(result.stdout, /Claude Code/);
   assert.match(result.stdout, /installed/);
+  assert.match(result.stdout, /~\/\.claude\/skills\/dumb/);
 });
 
 test("cli --project installs into the current repo and dedupes .agents/skills", async () => {
@@ -80,6 +81,33 @@ test("cli --dry-run writes nothing; --uninstall removes", async () => {
   assert.equal(gone.code, 0, gone.stderr);
   assert.match(gone.stdout, /removed/);
   assert.ok(!existsSync(join(home, ".codex/skills/dumb")));
+});
+
+test("cli reports a failed target and omits the usage hint", async () => {
+  const home = await tmp();
+  // A regular FILE where the skills dir should be makes `mkdir -p .../skills/dumb` fail.
+  await mkdir(join(home, ".codex"), { recursive: true });
+  const blocker = join(home, ".codex/skills");
+  await writeFile(blocker, "not a directory");
+
+  const failed = await cli(["-y", "-g", "--agents", "codex"], { home });
+  assert.equal(failed.code, 1);
+  assert.match(failed.stdout, /failed/);
+  assert.doesNotMatch(failed.stdout, /Mid-task, type/);
+});
+
+test("cli prints the usage hint once the same target installs successfully", async () => {
+  const home = await tmp();
+  await mkdir(join(home, ".codex"), { recursive: true });
+  const blocker = join(home, ".codex/skills");
+  await writeFile(blocker, "not a directory");
+  await cli(["-y", "-g", "--agents", "codex"], { home }); // fails; the blocker is still in place
+
+  await rm(blocker, { force: true });
+  const ok = await cli(["-y", "-g", "--agents", "codex"], { home });
+  assert.equal(ok.code, 0, ok.stderr);
+  assert.match(ok.stdout, /installed/);
+  assert.match(ok.stdout, /Mid-task, type/);
 });
 
 test("cli --yes with nothing detected and no --agents exits 1 with a hint", async () => {

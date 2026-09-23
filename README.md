@@ -26,8 +26,8 @@ Also installable with the `skills` CLI: `npx skills add <your-github-user>/dumb`
 
 | You type | You get |
 |---|---|
-| `/dumb` | what · why (bigger picture) · analogy · senior's eye · one question · next step (~150 words) |
-| `/dumb zero` | for someone who has never seen this: the analogy carries it, zero jargon (~200 words) |
+| `/dumb` | what · why (bigger picture) · analogy · senior's eye · one question · next step (~250 words) |
+| `/dumb zero` | for someone who has never seen this: the analogy carries it, zero jargon (~300 words) |
 | `/dumb terms` | the 3–8 technical terms of this step, each with an example from your task |
 
 Natural language works too: "why are we doing this?", "não entendi", "explica".

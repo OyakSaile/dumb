@@ -1,11 +1,20 @@
 #!/usr/bin/env node
 import { readFile } from "node:fs/promises";
 import { homedir } from "node:os";
+import { sep } from "node:path";
 import { stdin, stdout, stderr, exit } from "node:process";
 import { createInterface } from "node:readline/promises";
 import { AGENTS, AGENT_IDS } from "../src/agents.mjs";
 import { parseArgs, USAGE } from "../src/args.mjs";
 import { detectAgents, install, normalizeAgents, resolveTargets, uninstall } from "../src/install.mjs";
+
+// Abbreviates a path under the user's home directory to "~", without mangling
+// paths that merely share a prefix with it (e.g. home /Users/kay, path /Users/kayoelias).
+function abbreviateHome(path, home = homedir()) {
+  if (path === home) return "~";
+  if (path.startsWith(home + sep)) return `~${path.slice(home.length)}`;
+  return path;
+}
 
 const pkg = JSON.parse(await readFile(new URL("../package.json", import.meta.url), "utf8"));
 
@@ -44,8 +53,9 @@ if (interactive) {
 }
 
 if (agents.length === 0) {
+  const looked = AGENT_IDS.map((id) => abbreviateHome(AGENTS[id].configDir(process.env, homedir()))).join(", ");
   stderr.write(
-    "No agents found (looked for ~/.claude, ~/.cursor, ~/.codex, ~/.config/opencode).\n" +
+    `No agents found (looked for ${looked}).\n` +
     "Choose explicitly: npx total-dumb --agents claude,cursor,codex,opencode\n",
   );
   exit(1);
@@ -88,8 +98,9 @@ function printSummary(results) {
   for (const r of results) {
     const names = r.agents.map((id) => AGENTS[id].displayName).join(", ");
     const icon = r.status === "failed" ? "✖" : r.status === "skipped" ? "–" : "✔";
-    const where = r.path.startsWith(homedir()) ? `~${r.path.slice(homedir().length)}` : r.path;
+    const where = abbreviateHome(r.path);
     stdout.write(`  ${icon} ${names.padEnd(26)} ${where}  ${r.status}${r.error ? ` (${r.error})` : ""}\n`);
   }
-  if (!opts.uninstall && !opts.dryRun) stdout.write("\nMid-task, type:  /dumb   /dumb zero   /dumb terms\n");
+  const didWrite = results.some((r) => r.status === "installed" || r.status === "updated");
+  if (!opts.uninstall && !opts.dryRun && didWrite) stdout.write("\nMid-task, type:  /dumb   /dumb zero   /dumb terms\n");
 }

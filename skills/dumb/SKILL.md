@@ -23,11 +23,11 @@ Core principle: **specific beats correct-but-generic.** Every sentence names som
 
 2. **Locate the bigger picture.** Read at most 3 files; stop as soon as every slot of the template can be filled with something specific.
    - The conversation: what task is in flight and what was just done.
-   - If `docs/stories/` exists (BMAD): the current story file, then its epic file (`docs/epics/`, `docs/epic-*.md`, `docs/prd*.md`).
-   - Otherwise: `README*`, `docs/`, `ROADMAP*`, `docs/adr/`, `PLAN*.md`, `TODO*.md`, `AGENTS.md`, `.claude/`.
+   - If `docs/stories/` exists (BMAD): the current story file, then its epic file (`docs/epics/`, `docs/epic-*.md`, `docs/prd*.md`, `docs/architecture*.md`).
+   - Otherwise: `README*`, `docs/`, `ROADMAP*`, `docs/adr/`, `CHANGELOG*`, `PLAN*.md`, `TODO*.md`, `AGENTS.md`, `.claude/`.
    - The code: what calls or depends on the thing being changed.
    What to pull out of each source is in [references/context.md](references/context.md).
-   Nothing found? The answer opens with one line saying so, above `🧠` ("não achei docs de planejamento; explicando pelo código", in the user's language), then reasons from the code.
+   Nothing found? The answer opens with one line saying so, before the first section header ("não achei docs de planejamento; explicando pelo código", in the user's language), then reasons from the code.
 
 3. **Fill the template for the level**, in the user's language (headers included). Templates and a worked example are in [references/levels.md](references/levels.md). The `dev` template is below.
 
@@ -64,7 +64,7 @@ Length: about 250 words. Cut, do not compress.
 - which later stories are blocked by it;
 - the acceptance criterion that carries the motivation.
 
-This holds at every level. At `zero` the same four facts are told in the analogy's terms ("a tela 5.7 não pode começar enquanto isso não existir"), not dropped.
+This holds at `dev` and `zero`. At `zero` the same four facts are told in the analogy's terms ("a tela 5.7 não pode começar enquanto isso não existir"), not dropped.
 
 ## Honesty
 
@@ -78,6 +78,6 @@ If the motivation is weak, unclear, or the step looks unnecessary, the "why" slo
 | Analogy that decorates instead of maps | Each part of the analogy = one part of the step; if it does not map, choose another |
 | Answering from the conversation alone when `docs/stories/` or a PRD exists | Read the story + its epic first |
 | Replying in English because the invocation itself (`/dumb terms`) carried no words in the user's language | Language comes from the conversation and the project's docs, not from the trigger message |
-| Reasoning from the code without saying the planning docs were missing | That line opens the answer, above `🧠` |
+| Reasoning from the code without saying the planning docs were missing | That line opens the answer, before the first section header |
 | Continuing to implement inside the explanation | The explanation ends at `➡️ Próximo passo`; work resumes after it |
 | Past ~300 words at `dev` | Cut to ~250 for `dev`, ~300 for `zero`; the `🎯` slot is where the padding is |
