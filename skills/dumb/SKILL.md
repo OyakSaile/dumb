@@ -55,7 +55,7 @@ Core principle: **specific beats correct-but-generic.** Every sentence names som
 ➡️ Próximo passo: <one line>
 ```
 
-Length: about 200 words. Cut, do not compress.
+Length: about 250 words. Cut, do not compress.
 
 ## When the task is a BMAD story, the "why" slot states
 
@@ -80,4 +80,4 @@ If the motivation is weak, unclear, or the step looks unnecessary, the "why" slo
 | Replying in English because the invocation itself (`/dumb terms`) carried no words in the user's language | Language comes from the conversation and the project's docs, not from the trigger message |
 | Reasoning from the code without saying the planning docs were missing | That line opens the answer, above `🧠` |
 | Continuing to implement inside the explanation | The explanation ends at `➡️ Próximo passo`; work resumes after it |
-| Past ~250 words at `dev` | Cut to ~200 for `dev`, ~250 for `zero`; the `🎯` slot is where the padding is |
+| Past ~300 words at `dev` | Cut to ~250 for `dev`, ~300 for `zero`; the `🎯` slot is where the padding is |

@@ -2,7 +2,7 @@
 
 Headers below are in Portuguese as an example; render them in the user's language.
 
-## `dev` (default) — about 200 words
+## `dev` (default) — about 250 words
 
 ```
 🧠 O que estamos fazendo
@@ -24,7 +24,7 @@ Headers below are in Portuguese as an example; render them in the user's languag
 ➡️ Próximo passo: <one line>
 ```
 
-## `zero` — about 250 words, the analogy carries the explanation
+## `zero` — about 300 words, the analogy carries the explanation
 
 ```
 🪄 Analogia
