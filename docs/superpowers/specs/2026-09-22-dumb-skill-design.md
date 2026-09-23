@@ -55,8 +55,8 @@ The level is the first word after the skill name (`/dumb zero`), or inferred fro
 
 | Level | Aliases | Audience | Shape |
 |---|---|---|---|
-| `dev` (default) | — | a developer who knows the basics but not the why | 5 short sections, ~200 words |
-| `zero` | `eli5`, `beginner` | someone who has never seen anything like this | analogy is the backbone, zero jargon, every technical word defined inline, ~250 words |
+| `dev` (default) | — | a developer who knows the basics but not the why | 5 short sections, ~250 words |
+| `zero` | `eli5`, `beginner` | someone who has never seen anything like this | analogy is the backbone, zero jargon, every technical word defined inline, ~300 words |
 | `terms` | `termos`, `jargon`, `glossary` | wants the vocabulary of this step | list of 3–8 terms, each one sentence + one example from this task |
 
 ### 4.3 Output templates (rendered in the user's language)
@@ -108,7 +108,7 @@ Section headers are translated to the user's language (the Portuguese above is t
    If nothing is found, say so in one line and reason from the code.
 3. **For BMAD stories specifically**, the "why" must state: which epic the story belongs to, which earlier stories it builds on, which later stories depend on it, and which acceptance criterion explains the motivation.
 4. **Language:** reply in the language the user writes in.
-5. **Length caps:** dev ≈ 200 words, zero ≈ 250 words, terms ≤ 8 items. Prefer cutting over compressing. (Amended 2026-09-22 during implementation: a Portuguese answer that carries the epic and the dependency chain needs ~200 words; the original 150 made the shipped example contradict the rule.)
+5. **Length:** dev ≈ 250 words, zero ≈ 300 words, terms ≤ 8 items, with per-section sentence budgets in the templates. Prefer cutting over compressing. (Amended 2026-09-22 during implementation: nine measured `dev` runs carrying all six sections plus the epic, both upstream stories, the blocked story and an acceptance criterion landed at 246–269 words regardless of the stated target; the original 150 made the shipped example contradict the rule.)
 6. **Do not redo work.** After explaining, do not re-run or re-implement anything. End with `➡️ Próximo passo` so the user knows where the task resumes. Continue the task only if it was already in progress and the user has not asked to pause.
 7. **Be honest.** If the step's motivation is weak, unclear, or the step looks unnecessary, say that; it is part of learning to judge work, not a failure of the skill.
 8. **No filler.** No "great question", no moralizing, no restating the user's message.
