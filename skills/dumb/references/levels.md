@@ -2,7 +2,7 @@
 
 Headers below are in Portuguese as an example; render them in the user's language.
 
-## `dev` (default) — about 150 words
+## `dev` (default) — about 200 words
 
 ```
 🧠 O que estamos fazendo
@@ -24,7 +24,7 @@ Headers below are in Portuguese as an example; render them in the user's languag
 ➡️ Próximo passo: <one line>
 ```
 
-## `zero` — about 200 words, the analogy carries the explanation
+## `zero` — about 250 words, the analogy carries the explanation
 
 ```
 🪄 Analogia
@@ -63,17 +63,17 @@ Situation: story 5.6 "Retry com backoff para entrega de webhook", the migration 
 
 ```
 🧠 O que estamos fazendo
-Criamos a migration `webhook_retries` da story 5.6: uma tabela que guarda cada webhook de pagamento que falhou e quando tentar de novo.
+Criamos a migration `webhook_retries` da story 5.6: a tabela que guarda cada webhook de pagamento falho e quando retentar.
 
 🎯 Por quê (o quadro maior)
-5.6 é do Épico 5 (Pagamentos), cuja meta é "um Pix confirmado vira pedido pago, sempre". 5.3 (webhook) e 5.4 (idempotência) garantem que a confirmação chega e não é processada duas vezes, mas nada garante que ela chega se o processador de pedidos estiver fora naquele segundo. Sem retry, um pagamento real some. 5.7 (tela de status) está bloqueada por isso: não dá pra mostrar "pago" se a confirmação pode se perder. O AC 2 define o formato: 1m → 5m → 25m → 2h, 5 tentativas.
+5.6 é do Épico 5 (Pagamentos): "um Pix confirmado vira pedido pago, sempre". 5.3 (webhook) e 5.4 (idempotência) garantem que a confirmação chega e não roda duas vezes — mas não que chega se o processador estiver fora naquele segundo. Sem retry, um pagamento real some. Por isso 5.7 (tela de status) está bloqueada: não dá pra mostrar "pago" se ela pode sumir. O AC 2 fixa o formato: 1m → 5m → 25m → 2h, 5 tentativas.
 
 🪄 Analogia
-Carteiro com encomenda registrada: se ninguém atende, ele não joga fora; deixa aviso e volta em intervalos cada vez maiores. Depois de 5 tentativas a encomenda vai pra agência (dead letter) e alguém precisa buscar.
+Carteiro com encomenda registrada: se ninguém atende, não joga fora; deixa aviso e volta em intervalos cada vez maiores. Depois de 5 tentativas vai pra agência (dead letter) e alguém busca.
 
 👀 Olho de sênior
-- `next_attempt_at` precisa de índice: o job vai perguntar "o que já venceu?" a cada minuto.
-- Retry sem a idempotência de 5.4 = pagamento duplicado; o reprocessamento tem que passar pelo mesmo caminho.
+- `next_attempt_at` precisa de índice: o job pergunta "o que já venceu?" todo minuto.
+- Retry sem a idempotência de 5.4 = pagamento duplicado; o reprocessamento passa pelo mesmo caminho.
 
 🤔 Pra pensar
 Por que intervalos crescentes em vez de tentar a cada minuto?

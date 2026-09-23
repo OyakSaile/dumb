@@ -6,7 +6,7 @@
   "bin": { "total-dumb": "bin/cli.mjs" },
   "files": ["bin", "src", "skills", "README.md"],
   "engines": { "node": ">=18" },
-  "scripts": { "test": "node --test test/" },
+  "scripts": { "test": "node --test test/*.test.mjs" },
   "keywords": ["agent-skills", "skill", "claude-code", "cursor", "codex", "opencode", "bmad", "mentor", "learn"],
   "author": "Kayo Elias",
   "license": "MIT"
