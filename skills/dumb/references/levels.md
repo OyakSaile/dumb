@@ -28,7 +28,7 @@ If the user says continue, say nothing further and continue the task. If the use
 
 ## `zero` — ending, after the user has read the document
 
-Aliases `eli5`, `beginner`, `junior`. Sent when the user says they have read it; the reply ends here and **the turn stops**. Do not explain the offered terms yet.
+Aliases `eli5`, `beginner`, `junior`. Sent when the user says they have read it, even if that message also says "continue" (at this level the check is the gate back to the task); the reply ends here and **the turn stops**. Do not explain the offered terms yet. The task resumes after the user answers, or after they say they would rather skip the check.
 
 ```
 🤔 Before we go on:
