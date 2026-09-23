@@ -66,7 +66,7 @@ Situation: story 5.6 "Retry com backoff para entrega de webhook", the migration 
 Criamos a migration `webhook_retries` da story 5.6: a tabela que guarda cada webhook de pagamento falho e quando retentar.
 
 🎯 Por quê (o quadro maior)
-5.6 é do Épico 5 (Pagamentos): "um Pix confirmado vira pedido pago, sempre". 5.3 (webhook) e 5.4 (idempotência) garantem que a confirmação chega e não roda duas vezes — mas não que chega se o processador estiver fora naquele segundo. Sem retry, um pagamento real some. Por isso 5.7 (tela de status) está bloqueada: não dá pra mostrar "pago" se ela pode sumir. O AC 2 fixa o formato: 1m → 5m → 25m → 2h, 5 tentativas.
+5.6 é do Épico 5 (Pagamentos): "um Pix confirmado vira pedido pago, sempre". 5.3 (webhook) e 5.4 (idempotência) garantem que a confirmação chega e não roda duas vezes — mas não que chega se o processador estiver fora naquele segundo. Sem retry, um pagamento real some, por isso 5.7 (tela de status) está bloqueada: não dá pra mostrar "pago" se ela pode sumir. O AC 2 fixa o formato: 1m → 5m → 25m → 2h, 5 tentativas.
 
 🪄 Analogia
 Carteiro com encomenda registrada: se ninguém atende, não joga fora; deixa aviso e volta em intervalos cada vez maiores. Depois de 5 tentativas vai pra agência (dead letter) e alguém busca.
