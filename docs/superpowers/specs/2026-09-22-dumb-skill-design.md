@@ -167,7 +167,7 @@ Zero runtime dependencies. Node ≥ 18. ESM.
 
 - Unknown flag → usage + exit 1.
 - Target parent not writable → report that agent as failed, continue with the others, exit 1 at the end.
-- Uninstall of a path that does not exist → `skipped (not found)`, exit 0.
+- Uninstall of a path that does not exist → `skipped`, exit 0.
 - Skill folder missing from the package (broken publish) → clear error, exit 1.
 
 ## 7. Testing
