@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 400" width="1200" height="400" role="img" aria-labelledby="t d">
+  <title id="t">total-dumb</title>
+  <desc id="d">The /dumb agent skill explains what your AI is doing right now and why, in your language. Every answer has the same six slots.</desc>
+
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0A0E1F"/>
+      <stop offset="0.55" stop-color="#101838"/>
+      <stop offset="1" stop-color="#161F47"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#FFB53D" stop-opacity="0.22"/>
+      <stop offset="1" stop-color="#FFB53D" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="glow2" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#4FD1C5" stop-opacity="0.18"/>
+      <stop offset="1" stop-color="#4FD1C5" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <rect width="1200" height="400" rx="24" fill="url(#bg)"/>
+  <circle cx="150" cy="80" r="260" fill="url(#glow)"/>
+  <circle cx="1080" cy="380" r="300" fill="url(#glow2)"/>
+
+  <!-- left column -->
+  <g font-family="Helvetica Neue, Helvetica, Arial, sans-serif">
+    <text x="72" y="112" font-size="13" letter-spacing="4.5" fill="#7386B4">AGENT SKILL</text>
+    <text x="72" y="206" font-size="86" font-weight="bold" fill="#FFFFFF"
+          font-family="SFMono-Regular, Menlo, Consolas, Liberation Mono, monospace">/dumb</text>
+    <text x="72" y="256" font-size="23" fill="#AEBBD9">explains what your AI is doing right now,</text>
+    <text x="72" y="288" font-size="23" fill="#AEBBD9">and why it matters, in your language.</text>
+    <text x="72" y="342" font-size="15" fill="#6B7DAB">Claude Code  ·  Cursor  ·  Codex  ·  OpenCode</text>
+  </g>
+
+  <!-- right card -->
+  <g>
+    <rect x="612" y="56" width="520" height="288" rx="18" fill="#0D1330" stroke="#2A3663" stroke-width="1.5"/>
+    <g font-family="Helvetica Neue, Helvetica, Arial, sans-serif">
+      <text x="648" y="96" font-size="12" letter-spacing="2.6" fill="#6B7DAB">EVERY ANSWER, THE SAME SIX SLOTS</text>
+
+      <circle cx="654" cy="135" r="6" fill="#4FD1C5"/>
+      <text x="676" y="140" font-size="18" fill="#DCE4F7">O que estamos fazendo</text>
+
+      <circle cx="654" cy="171" r="6" fill="#FFB53D"/>
+      <text x="676" y="176" font-size="18" fill="#DCE4F7">Por quê (o quadro maior)</text>
+
+      <circle cx="654" cy="207" r="6" fill="#A78BFA"/>
+      <text x="676" y="212" font-size="18" fill="#DCE4F7">Analogia</text>
+
+      <circle cx="654" cy="243" r="6" fill="#60A5FA"/>
+      <text x="676" y="248" font-size="18" fill="#DCE4F7">Olho de sênior</text>
+
+      <circle cx="654" cy="279" r="6" fill="#F472B6"/>
+      <text x="676" y="284" font-size="18" fill="#DCE4F7">Pra pensar</text>
+
+      <circle cx="654" cy="315" r="6" fill="#4ADE80"/>
+      <text x="676" y="320" font-size="18" fill="#DCE4F7">Próximo passo</text>
+    </g>
+  </g>
+</svg>
