@@ -17,7 +17,7 @@
 
 Coding agents are very good at doing the work and very bad at telling you why they are doing it. You watch a migration appear, a job get scheduled, a column get indexed, and the honest answer to "why this, now?" is somewhere in a story file you have not opened.
 
-`/dumb` is an [Agent Skill](https://agentskills.io) that answers that question from where you actually are. It reads the story, its epic and the code around the change, then gives you the step, the bigger picture, an analogy that maps, what a senior would watch for, and where the task resumes. In your language.
+`/dumb` is an [Agent Skill](https://agentskills.io) that answers that question from where you actually are. It reads the story, its epic and the code around the change, then explains in short sentences, one idea at a time, and offers to go deeper only if you want it. In your language.
 
 It works in **Claude Code, Cursor, Codex and OpenCode**, installs with one command, and has zero runtime dependencies.
 
@@ -27,34 +27,30 @@ You are mid-story. The migration just landed. You type `/dumb`:
 
 ```
 🧠 What we're doing
-We wrote the `webhook_retries` migration for story 5.6: the table holding every
-failed payment webhook and when to retry it.
+We wrote the `webhook_retries` migration for story 5.6. It stores each payment
+confirmation we failed to process.
 
 🎯 Why (the bigger picture)
-5.6 belongs to Epic 5 (Payments): "a confirmed payment becomes a paid order,
-always". 5.3 (webhook) and 5.4 (idempotency) guarantee the confirmation arrives
-and is not processed twice, but not that it arrives at all if the order processor
-is down that second. Without retry a real payment vanishes, which is why 5.7
-(status screen) is blocked: you cannot show "paid" for something that can
-disappear. AC 2 fixes the shape: 1m → 5m → 25m → 2h, 5 attempts.
+Epic 5 promises that a confirmed payment always becomes a paid order. Story 5.4
+already made reprocessing safe to repeat. Today, if our order service is down for
+a second, that confirmation is lost and the customer paid for nothing. The 5.7
+status screen cannot be trusted until this exists.
 
 🪄 Analogy
-A tracked parcel: if nobody answers, the carrier does not bin it; they leave a
-notice and come back at longer and longer intervals. After 5 attempts it goes to
-the depot (dead letter) and someone collects it.
+A courier who finds nobody home leaves a notice and comes back later, instead of
+binning the parcel.
 
 👀 Senior's eye
-- `next_attempt_at` needs an index: the job asks "what is due?" every minute.
-- Retry without 5.4's idempotency = double payment; reprocessing goes down the
-  same path.
-
-🤔 One question
-Why growing intervals instead of retrying every minute?
+- `next_attempt_at` will need an index, because the retry job scans it every minute.
+- Five attempts over about three hours is the ceiling; a longer outage still ends
+  in the dead-letter pile.
 
 ➡️ Next step: the job that reads `next_attempt_at <= now()`.
+
+Want me to explain webhook, idempotency or dead letter, or shall we continue?
 ```
 
-Note what is *not* there: no lecture on what a migration is. Every line names something real from your task. That is the whole design constraint.
+Note what is *not* there: no lecture on what a migration is, no wall of inline definitions, no chain of story numbers. One story back, one story forward, and an offer at the end. Say "continue" and you get nothing more; name a term and it gets explained against your actual code.
 
 ## Install
 
@@ -78,15 +74,18 @@ Also available through the `skills` CLI:
 npx skills add OyakSaile/dumb
 ```
 
-## Three levels
+## Four levels
 
 | You type | You get |
 |---|---|
-| `/dumb` | the six slots above, for a developer who wants the why (~250 words) |
-| `/dumb zero` | for someone who has never seen this before: the analogy carries it, every technical word glossed on first use, no senior section (~300 words) |
+| `/dumb` | one short block: what, why, analogy, a senior's eye, next step. Then one line offering to explain a term or move on (~150 words) |
+| `/dumb zero` | a short, jargon-free explanation, then it stops and asks: which of these terms shall I explain, and one question to check you followed. Answer and it keeps going at your pace (~120 words to start) |
+| `/dumb senior` | no analogy, no questions: the why, the trade-offs being weighed, the next step (~120 words) |
 | `/dumb terms` | just the vocabulary: 3 to 8 terms from this step, each with a concrete example from your task |
 
-Aliases: `eli5` and `beginner` for `zero`; `termos`, `jargon` and `glossary` for `terms`.
+Aliases: `eli5`, `beginner` and `junior` for `zero`; `pro` and `expert` for `senior`; `termos`, `jargon` and `glossary` for `terms`.
+
+With no level given it reads your message. Use the step's terms correctly, or ask a sharp trade-off question, and you get the `senior` answer with no hand-holding. Say "I'm lost" and you get `dev`. It will not offer to define a word you just used correctly.
 
 You do not have to use the slash command. "why are we doing this?", "what is this for?", "I don't get it", "explain this step" all trigger it mid-task. Ask in any language and the answer comes back in it, headers included.
 

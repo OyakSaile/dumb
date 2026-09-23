@@ -7,7 +7,7 @@ Read at most 3 files. Stop when every template slot can be filled with something
 | Source | Extract |
 |---|---|
 | The conversation | the task in flight; the file / command just touched; what the user already knows |
-| BMAD story file (`docs/stories/<n>.<m>.story.md`, `docs/stories/*<n>.<m>*`) | the "so that" clause; `Depende de` / `Bloqueia` (or `depends on` / `blocks`); the acceptance criterion behind the current task; which task is checked and which is next |
+| BMAD story file (`docs/stories/<n>.<m>.story.md`, `docs/stories/*<n>.<m>*`) | the "so that" clause; the single most relevant story it depends on and the single story it unblocks, to be named in plain words rather than as an ID chain; the acceptance criterion behind the current task; which task is checked and which is next |
 | BMAD epic (`docs/epics/epic-<n>*.md`, `docs/epic-<n>*.md`, `docs/prd*.md` section) | the epic's goal in one sentence; the story list and its order (what comes before and after) |
 | PRD (`docs/prd*.md`) | the product goal the epic serves |
 | Architecture doc (`docs/architecture*.md`) | the technical design or constraint this step has to respect |

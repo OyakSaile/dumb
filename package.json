@@ -1,6 +1,6 @@
 {
   "name": "total-dumb",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Agent skill that explains what your AI is doing right now and why, with an analogy. One npx install for Claude Code, Cursor, Codex and OpenCode.",
   "type": "module",
   "bin": {
