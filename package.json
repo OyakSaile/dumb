@@ -3,11 +3,40 @@
   "version": "0.1.0",
   "description": "Agent skill that explains what your AI is doing right now and why, with an analogy. One npx install for Claude Code, Cursor, Codex and OpenCode.",
   "type": "module",
-  "bin": { "total-dumb": "bin/cli.mjs" },
-  "files": ["bin", "src", "skills", "README.md"],
-  "engines": { "node": ">=18" },
-  "scripts": { "test": "node --test test/*.test.mjs" },
-  "keywords": ["agent-skills", "skill", "claude-code", "cursor", "codex", "opencode", "bmad", "mentor", "learn"],
+  "bin": {
+    "total-dumb": "bin/cli.mjs"
+  },
+  "files": [
+    "bin",
+    "src",
+    "skills",
+    "README.md"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "test": "node --test test/*.test.mjs"
+  },
+  "keywords": [
+    "agent-skills",
+    "skill",
+    "claude-code",
+    "cursor",
+    "codex",
+    "opencode",
+    "bmad",
+    "mentor",
+    "learn"
+  ],
   "author": "Kayo Elias",
-  "license": "MIT"
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/OyakSaile/dumb.git"
+  },
+  "homepage": "https://github.com/OyakSaile/dumb#readme",
+  "bugs": {
+    "url": "https://github.com/OyakSaile/dumb/issues"
+  }
 }

@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/OyakSaile/im-dump-skill/main/assets/banner.png" alt="total-dumb — the /dumb agent skill explains what your AI is doing right now and why" width="860">
+  <img src="https://raw.githubusercontent.com/OyakSaile/dumb/main/assets/banner.png" alt="total-dumb — the /dumb agent skill explains what your AI is doing right now and why" width="860">
 </p>
 
 <p align="center">
@@ -75,7 +75,7 @@ npx total-dumb --dry-run                  # show what would happen, write nothin
 Also available through the `skills` CLI:
 
 ```bash
-npx skills add OyakSaile/im-dump-skill
+npx skills add OyakSaile/dumb
 ```
 
 ## Three levels
