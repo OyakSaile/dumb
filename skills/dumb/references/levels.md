@@ -1,121 +1,89 @@
-# Levels — templates and examples
+# Levels — the chat reply and the dialogue
+
+The depth goes in the document ([document.md](document.md)). The chat stays short: at most 100 words plus the path. Never paste the document into the chat.
 
 Headers below are shown in English, the canonical form; render them in the user's language.
 
-The simplicity rules in `SKILL.md` apply to every template here: short sentences, at most one new technical term per sentence, no stacked definitions, no chains of story IDs, and an everyday analogy of at most two sentences that maps one thing.
-
-## `dev` (default) — about 150 words
+## The chat reply, every level except `terms`
 
 ```
-🧠 What we're doing
-<1–2 short sentences. Name the story / file / function being touched right now.>
+<3–5 short lines: what we're doing and why it matters, plain words,
+ one new technical term per sentence at most.>
 
-🎯 Why (the bigger picture)
-<2–3 short sentences. What this makes possible; what the earlier work built and
- what the next work needs from it, at most one story named each way.>
+📄 <path to the file that was written>
 
-🪄 Analogy
-<At most 2 sentences, everyday, mapping one thing. Omit if none fits naturally.>
+<the level's ending>
+```
 
-👀 Senior's eye
-<2 bullets, one sentence each: a trade-off or pitfall right here.>
+## `dev` (default) — ending
 
-➡️ Next step: <one line>
+One line, nothing more:
 
+```
 Want me to explain <term>, <term> or <term>, or shall we continue?
 ```
 
-## `zero` — first reply about 120 words, then a dialogue
+If the user says continue, say nothing further and continue the task. If the user picks a term, answer it in chat under the dialogue rules below.
 
-Aliases `eli5`, `beginner`, `junior`. The first reply ends at the check block and stops the turn.
+## `zero` — ending
+
+Aliases `eli5`, `beginner`, `junior`. The reply ends here and **the turn stops**. Do not explain the offered terms yet.
 
 ```
-🧠 What we're doing
-<1–2 short sentences, no jargon.>
-
-🎯 Why it matters
-<2–3 short sentences. What goes wrong without it, in everyday terms.>
-
-🪄 Analogy
-<At most 2 sentences, everyday, mapping one thing. Omit if none fits naturally.>
-
 🤔 Before we go on:
 1. Want me to explain any of these? <term> · <term> · <term>
 2. Quick question: <one simple comprehension question about this step>
 ```
 
-No `👀 Senior's eye` at this level. On the user's reply: about 80 words per term they pick, meaning then how it works in this project then one tiny example; a wrong answer gets a different and simpler explanation plus one new question; "got it" closes with `➡️ Next step` alone.
+## `senior` — ending
 
-## `senior` — about 120 words
+Aliases `pro`, `expert`. Nothing. No question, no offer to define terms. The document carries the trade-offs.
 
-Aliases `pro`, `expert`. No analogy, no comprehension question, no offer to define terms.
+## `terms` — chat only, no file
 
-```
-🎯 Why
-<2–3 sentences. What this makes possible and what depends on it.>
-
-👀 Trade-offs
-<2–3 bullets, one sentence each: what a senior weighs right here, including the
- option that was not taken.>
-
-➡️ Next step: <one line>
-```
-
-## `terms` — 3 to 8 items, no analogy
+Aliases `termos`, `jargon`, `glossary`.
 
 ```
 📚 Terms in this step
-- **<term>** — <one-sentence meaning>. Here: <one concrete example from this task>.
+- **<term>** — <one-sentence meaning, with the reason it exists>. Here: <one concrete example from this task>.
 - ...
 
 ➡️ Next step: <one line>
 ```
 
-## Worked example (`dev`, BMAD story)
+Three to eight items, no analogy.
 
-Situation: story 5.6 "Retry with backoff for webhook delivery", the migration `webhook_retries` was just written, the user asks "why are we doing this story?".
+## Dialogue rules
+
+- **A term the user picked** — about 80 words: one sentence of meaning, then how it works in this project naming a real file or function, then one tiny example. Then, at `zero` only, one new question.
+- **A wrong answer to the check question** — do not repeat the same explanation. Explain it a different and simpler way, then ask one new question.
+- **"entendi" / "ok" / "got it"** — close with `➡️ Next step` and nothing else.
+- Never offer a term the user already knows or already had explained.
+- Stop asking the moment the user turns back to the task.
+
+## Worked example — `dev` chat reply
+
+Situation: story 5.6, the `webhook_retries` migration was just written, the user asks "why are we doing this story?".
 
 ```
-🧠 What we're doing
-We wrote the `webhook_retries` migration for story 5.6. It stores each payment
-confirmation we failed to process.
+We just added the table that remembers a payment confirmation we failed to
+process, so a retry can pick it up later. Without it, one second of downtime in
+the order service loses a real payment, because the provider only tells us once.
+I wrote the whole thing up, parts and diagrams included.
 
-🎯 Why (the bigger picture)
-Epic 5 promises that a confirmed payment always becomes a paid order. Story 5.4
-already made reprocessing safe to repeat. Today, if our order service is down for a
-second, that confirmation is lost and the customer paid for nothing. The 5.7
-status screen cannot be trusted until this exists.
-
-🪄 Analogy
-A courier who finds nobody home leaves a notice and comes back later, instead of
-binning the parcel.
-
-👀 Senior's eye
-- `next_attempt_at` will need an index, because the retry job scans it every minute.
-- Five attempts over about three hours is the ceiling; a longer outage still ends in the dead-letter pile.
-
-➡️ Next step: the job that reads `next_attempt_at <= now()`.
+📄 docs/dumb/2026-09-22-retry-webhook-backoff.md
 
 Want me to explain webhook, idempotency or dead letter, or shall we continue?
 ```
 
-## Worked example (`zero` dialogue, same story)
-
-First reply, then the turn ends:
+## Worked example — `zero` chat reply, then one follow-up
 
 ```
-🧠 What we're doing
-We created a table called `webhook_retries`. It stores the payment
-confirmations our system failed to handle.
+We created a table called `webhook_retries`. It stores the payment confirmations
+our system failed to handle the first time, so we can try again later. Without
+it, the money leaves the customer and the order never becomes paid.
 
-🎯 Why it matters
-When someone pays, the provider sends our system a message. If our system
-is down at that moment, the message is lost and the order never becomes paid,
-even though the money already left the customer. This table lets us retry.
-
-🪄 Analogy
-A courier who finds nobody home leaves a notice and returns later, instead of
-binning the parcel.
+📄 docs/dumb/2026-09-22-retry-webhook-backoff.md
 
 🤔 Before we go on:
 1. Want me to explain any of these? webhook · idempotency · dead letter
@@ -126,11 +94,10 @@ binning the parcel.
 The user replies "I don't know what a webhook is". Only that term is answered, then one new question:
 
 ```
-🧠 webhook
-A webhook is one system calling another to announce that something just happened.
-Here the payment provider calls our `handlePaymentWebhook` function in
-`src/payments/webhook.ts` the moment a payment clears. We never ask "is it paid
-yet?" in a loop. They tell us once, so we have to be listening.
+A webhook is one system calling another to announce that something just happened,
+so we never have to keep asking. Here the payment provider calls our
+`handlePaymentWebhook` function in `src/payments/webhook.ts` the moment a payment
+clears. It arrives once, which is exactly why losing it is expensive.
 
 🤔 One more: that function calls `processOrder` straight away. What happens today
 if `processOrder` fails?

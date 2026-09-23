@@ -23,34 +23,36 @@ It works in **Claude Code, Cursor, Codex and OpenCode**, installs with one comma
 
 ## What it looks like
 
-You are mid-story. The migration just landed. You type `/dumb`:
+`/dumb` writes a full explainer into your repo, then keeps the chat to a few lines and a path. Depth belongs in a document you can scroll, not in a wall of chat text.
 
-```
-🧠 What we're doing
-We wrote the `webhook_retries` migration for story 5.6. It stores each payment
-confirmation we failed to process.
+Excerpt from `docs/dumb/2026-09-22-retry-webhook-backoff.md`. The real file also carries the system design, every other part, common mistakes, a self-check and a glossary.
 
-🎯 Why (the bigger picture)
-Epic 5 promises that a confirmed payment always becomes a paid order. Story 5.4
-already made reprocessing safe to repeat. Today, if our order service is down for
-a second, that confirmation is lost and the customer paid for nothing. The 5.7
-status screen cannot be trusted until this exists.
-
-🪄 Analogy
-A courier who finds nobody home leaves a notice and comes back later, instead of
-binning the parcel.
-
-👀 Senior's eye
-- `next_attempt_at` will need an index, because the retry job scans it every minute.
-- Five attempts over about three hours is the ceiling; a longer outage still ends
-  in the dead-letter pile.
-
-➡️ Next step: the job that reads `next_attempt_at <= now()`.
-
-Want me to explain webhook, idempotency or dead letter, or shall we continue?
+```mermaid
+flowchart LR
+  PSP["Payment provider"] -->|"payment.confirmed webhook"| Handler["handlePaymentWebhook"]
+  Handler -->|"the payload"| Order["processOrder"]
+  Handler -->|"row written on failure"| Retries[("webhook_retries")]
+  Retries -->|"rows already due"| Job["Retry job, every minute"]
+  Job -->|"same payload, same key"| Order
 ```
 
-Note what is *not* there: no lecture on what a migration is, no wall of inline definitions, no chain of story numbers. One story back, one story forward, and an offer at the end. Say "continue" and you get nothing more; name a term and it gets explained against your actual code.
+#### Why this exists
+
+Epic 5 promises that a confirmed payment always becomes a paid order, because a customer whose money left their account and whose order still says "pending" will charge back and stop trusting the shop. Today the provider tells us once, and `handlePaymentWebhook` processes it immediately. If the order service is down for that one second, the message is gone and nobody retries, so the payment is lost silently. Story 5.4 already made reprocessing safe to repeat, which is what makes an automatic retry possible at all.
+
+#### handlePaymentWebhook
+
+**In general** — A webhook is one system calling another to announce that something happened, so the receiver never has to ask. The usual alternative is polling, where you ask "is it paid yet?" on a timer, which wastes calls and still adds delay.
+
+**In this project** — The exported function in `src/payments/webhook.ts`. The provider posts the confirmation to it, and it calls `processOrder` straight away.
+
+**How it connects** — The provider feeds it; it feeds `processOrder`. After this story it also feeds `webhook_retries` whenever `processOrder` throws, and the retry job picks up from there.
+
+**❌ Doing it wrong** — Catching the error and returning 200 without storing anything. The provider sees success and never sends the message again, so the payment is lost with no trace to debug.
+
+**✅ Doing it right** — Write the payload to `webhook_retries` before returning, because that row is the only evidence the payment arrived, and the retry job has nothing to work from without it.
+
+Every rule, number and design choice in that file carries its reason. "AC 2 defines 1m, 5m, 25m, 2h" is a failure; the reason those intervals grow is the point.
 
 ## Install
 
@@ -76,18 +78,28 @@ npx skills add OyakSaile/dumb
 
 ## Four levels
 
+Every level except `terms` writes the document. The level sets how deep the document goes and how much the chat asks you.
+
 | You type | You get |
 |---|---|
-| `/dumb` | one short block: what, why, analogy, a senior's eye, next step. Then one line offering to explain a term or move on (~150 words) |
-| `/dumb zero` | a short, jargon-free explanation, then it stops and asks: which of these terms shall I explain, and one question to check you followed. Answer and it keeps going at your pace (~120 words to start) |
-| `/dumb senior` | no analogy, no questions: the why, the trade-offs being weighed, the next step (~120 words) |
-| `/dumb terms` | just the vocabulary: 3 to 8 terms from this step, each with a concrete example from your task |
+| `/dumb` | the full document, then a few lines in chat and one line offering to explain a term or move on |
+| `/dumb zero` | the full document with a wider glossary and an everyday analogy per part; the chat stops and asks which term to explain, plus one question to check you followed |
+| `/dumb senior` | the document without glossary or analogies, with the trade-offs and the alternatives that were rejected; the chat asks nothing |
+| `/dumb terms` | no file, just the vocabulary of this step in chat, each term with an example from your task |
 
 Aliases: `eli5`, `beginner` and `junior` for `zero`; `pro` and `expert` for `senior`; `termos`, `jargon` and `glossary` for `terms`.
 
-With no level given it reads your message. Use the step's terms correctly, or ask a sharp trade-off question, and you get the `senior` answer with no hand-holding. Say "I'm lost" and you get `dev`. It will not offer to define a word you just used correctly.
+With no level given it reads your message. Use the step's terms correctly, or ask a sharp trade-off question, and you get the `senior` treatment. Say "I'm lost" and you get `dev`. It will not offer to define a word you just used correctly.
 
-You do not have to use the slash command. "why are we doing this?", "what is this for?", "I don't get it", "explain this step" all trigger it mid-task. Ask in any language and the answer comes back in it, headers included.
+You do not have to use the slash command. "why are we doing this?", "what is this for?", "I don't get it", "explain this step" all trigger it mid-task. Ask in any language and both the document and the reply come back in it, headers included.
+
+## What lands in your repo
+
+```
+docs/dumb/2026-09-22-retry-webhook-backoff.md
+```
+
+One file per feature, rewritten when you ask again. Inside: why it exists, the big picture as a labelled Mermaid flow, the system design with the current feature highlighted and the planned connections dotted, a sequence diagram of the main path including the failure branch, then every part with what it is in general, what it is here, what it connects to, a worked example, and a wrong-way and right-way pair. It closes with the common mistakes on this feature, three questions with collapsed answers, and a glossary.
 
 ## Where the "why" comes from
 
