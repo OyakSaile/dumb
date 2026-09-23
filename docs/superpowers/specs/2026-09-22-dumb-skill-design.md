@@ -59,40 +59,40 @@ The level is the first word after the skill name (`/dumb zero`), or inferred fro
 **dev**
 
 ```
-🧠 O que estamos fazendo
+🧠 What we're doing
 <1–2 sentences, concrete: name the story / file / function / step>
 
-🎯 Por quê (o quadro maior)
+🎯 Why (the bigger picture)
 <the goal this serves; where it sits (epic, roadmap, dependency chain);
  what breaks or gets harder without it; why now and not later>
 
-🪄 Analogia
+🪄 Analogy
 <one real-world analogy whose parts map 1:1 onto the parts of this step>
 
-👀 Olho de sênior
+👀 Senior's eye
 <1–2 trade-offs or pitfalls a senior would watch for right here>
 
-🤔 Pra pensar
+🤔 One question
 <one question the user can answer to check they got it; omit if it would be forced>
 
-➡️ Próximo passo: <one line: where the task resumes>
+➡️ Next step: <one line: where the task resumes>
 ```
 
 Each slot carries a sentence budget: 🧠 1–2 sentences · 🎯 at most 4 sentences · 🪄 2–3 sentences · 👀 2 bullets, one sentence each · 🤔 one question · ➡️ one line.
 
-**zero** — same content, reordered: `🪄 Analogia` first (it carries the explanation), then `🧠 O que`, `🎯 Por quê`, `🤔 Pra pensar`, `➡️ Próximo passo`. No `👀 Olho de sênior`. Every technical term appears as `term (plain-words meaning)` the first time. Slot budgets at this level: 🪄 3–4 sentences · 🧠 2–3 sentences · 🎯 2–3 sentences · 🤔 one question · ➡️ one line.
+**zero** — same content, reordered: `🪄 Analogy` first (it carries the explanation), then `🧠 What we're doing`, `🎯 Why (the bigger picture)`, `🤔 One question`, `➡️ Next step`. No `👀 Senior's eye`. Every technical term appears as `term (plain-words meaning)` the first time. Slot budgets at this level: 🪄 3–4 sentences · 🧠 2–3 sentences · 🎯 2–3 sentences · 🤔 one question · ➡️ one line.
 
 **terms**
 
 ```
-📚 Termos deste passo
-- **<term>** — <one-sentence meaning>. Aqui: <one concrete example from this task>.
+📚 Terms in this step
+- **<term>** — <one-sentence meaning>. Here: <one concrete example from this task>.
 - ...
 
-➡️ Próximo passo: <one line>
+➡️ Next step: <one line>
 ```
 
-Section headers are translated to the user's language (the Portuguese above is the example; English users get English headers).
+The canonical headers are English, as above, and are rendered in the language the user writes in.
 
 ### 4.4 Behavioral rules
 
@@ -106,7 +106,7 @@ Section headers are translated to the user's language (the Portuguese above is t
 3. **For BMAD stories specifically**, the "why" must state: which epic the story belongs to, which earlier stories it builds on, which later stories depend on it, and which acceptance criterion explains the motivation.
 4. **Language:** reply in the language the user writes in.
 5. **Length:** dev ≈ 250 words, zero ≈ 300 words, terms ≤ 8 items, with per-section sentence budgets in the templates. Prefer cutting over compressing. (Amended 2026-09-22 during implementation: nine measured `dev` runs carrying all six sections plus the epic, both upstream stories, the blocked story and an acceptance criterion landed at 246–269 words regardless of the stated target; the original 150 made the shipped example contradict the rule.)
-6. **Do not redo work.** After explaining, do not re-run or re-implement anything. End with `➡️ Próximo passo` so the user knows where the task resumes. Continue the task only if it was already in progress and the user has not asked to pause.
+6. **Do not redo work.** After explaining, do not re-run or re-implement anything. End with `➡️ Next step` so the user knows where the task resumes. Continue the task only if it was already in progress and the user has not asked to pause.
 7. **Be honest.** If the step's motivation is weak, unclear, or the step looks unnecessary, say that; it is part of learning to judge work, not a failure of the skill.
 8. **No filler.** No "great question", no moralizing, no restating the user's message.
 

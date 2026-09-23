@@ -23,4 +23,4 @@ Read at most 3 files. Stop when every template slot can be filled with something
 
 **Generic**: README → `docs/` (ROADMAP, ADRs, PLAN, CHANGELOG) → the code around the change.
 
-**Nothing found**: say "não achei docs de planejamento; explicando pelo código" (in the user's language) and derive the why from callers, tests, and the commit history (`git log --oneline -10 -- <path>`).
+**Nothing found**: say "No planning docs found; explaining from the code" (in the user's language) and derive the why from callers, tests, and the commit history (`git log --oneline -10 -- <path>`).

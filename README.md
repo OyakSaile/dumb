@@ -26,32 +26,32 @@ It works in **Claude Code, Cursor, Codex and OpenCode**, installs with one comma
 You are mid-story. The migration just landed. You type `/dumb`:
 
 ```
-🧠 O que estamos fazendo
-Criamos a migration `webhook_retries` da story 5.6: a tabela que guarda cada
-webhook de pagamento falho e quando retentar.
+🧠 What we're doing
+We wrote the `webhook_retries` migration for story 5.6: the table holding every
+failed payment webhook and when to retry it.
 
-🎯 Por quê (o quadro maior)
-5.6 é do Épico 5 (Pagamentos): "um Pix confirmado vira pedido pago, sempre".
-5.3 (webhook) e 5.4 (idempotência) garantem que a confirmação chega e não roda
-duas vezes — mas não que chega se o processador estiver fora naquele segundo.
-Sem retry, um pagamento real some, por isso 5.7 (tela de status) está bloqueada:
-não dá pra mostrar "pago" se ela pode sumir. O AC 2 fixa o formato:
-1m → 5m → 25m → 2h, 5 tentativas.
+🎯 Why (the bigger picture)
+5.6 belongs to Epic 5 (Payments): "a confirmed payment becomes a paid order,
+always". 5.3 (webhook) and 5.4 (idempotency) guarantee the confirmation arrives
+and is not processed twice, but not that it arrives at all if the order processor
+is down that second. Without retry a real payment vanishes, which is why 5.7
+(status screen) is blocked: you cannot show "paid" for something that can
+disappear. AC 2 fixes the shape: 1m → 5m → 25m → 2h, 5 attempts.
 
-🪄 Analogia
-Carteiro com encomenda registrada: se ninguém atende, não joga fora; deixa aviso
-e volta em intervalos cada vez maiores. Depois de 5 tentativas vai pra agência
-(dead letter) e alguém busca.
+🪄 Analogy
+A tracked parcel: if nobody answers, the carrier does not bin it; they leave a
+notice and come back at longer and longer intervals. After 5 attempts it goes to
+the depot (dead letter) and someone collects it.
 
-👀 Olho de sênior
-- `next_attempt_at` precisa de índice: o job pergunta "o que já venceu?" todo minuto.
-- Retry sem a idempotência de 5.4 = pagamento duplicado; o reprocessamento passa
-  pelo mesmo caminho.
+👀 Senior's eye
+- `next_attempt_at` needs an index: the job asks "what is due?" every minute.
+- Retry without 5.4's idempotency = double payment; reprocessing goes down the
+  same path.
 
-🤔 Pra pensar
-Por que intervalos crescentes em vez de tentar a cada minuto?
+🤔 One question
+Why growing intervals instead of retrying every minute?
 
-➡️ Próximo passo: o job que lê `next_attempt_at <= now()`.
+➡️ Next step: the job that reads `next_attempt_at <= now()`.
 ```
 
 Note what is *not* there: no lecture on what a migration is. Every line names something real from your task. That is the whole design constraint.
@@ -88,7 +88,7 @@ npx skills add OyakSaile/im-dump-skill
 
 Aliases: `eli5` and `beginner` for `zero`; `termos`, `jargon` and `glossary` for `terms`.
 
-You do not have to use the slash command. "why are we doing this?", "não entendi", "explica", "what is this for?" all trigger it mid-task.
+You do not have to use the slash command. "why are we doing this?", "what is this for?", "I don't get it", "explain this step" all trigger it mid-task. Ask in any language and the answer comes back in it, headers included.
 
 ## Where the "why" comes from
 
@@ -116,16 +116,6 @@ If the motivation is weak or the step looks unnecessary, it says that too. Learn
 Test-first, the same way you would build a feature. The scenario was run against a fixture repo by fresh subagents **without** the skill to establish a baseline, then again with it.
 
 The baseline answers were not wrong, they were shapeless: five of five runs produced a correct 322 to 382 word essay with no analogy, no pitfalls, no reflection question and no distinct next step. Every element the skill enforces exists because a real run dropped it, and three rounds of fixes each closed a failure that was actually observed rather than imagined.
-
-## Em português
-
-`/dumb` explica o que a IA está fazendo agora e por quê, no meio de qualquer tarefa: uma story do BMAD, um refactor, um bug, uma migration. Ele lê a story e o épico, então te dá o passo atual, o quadro maior com as dependências, uma analogia que realmente mapeia, o que um sênior olharia, e onde o trabalho continua.
-
-`/dumb zero` é pra quem nunca viu nada daquilo. `/dumb termos` lista só o vocabulário do passo. A resposta sai no seu idioma, incluindo os títulos.
-
-```bash
-npx total-dumb
-```
 
 ## License
 

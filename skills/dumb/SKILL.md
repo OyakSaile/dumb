@@ -27,32 +27,32 @@ Core principle: **specific beats correct-but-generic.** Every sentence names som
    - Otherwise: `README*`, `docs/`, `ROADMAP*`, `docs/adr/`, `CHANGELOG*`, `PLAN*.md`, `TODO*.md`, `AGENTS.md`, `.claude/`.
    - The code: what calls or depends on the thing being changed.
    What to pull out of each source is in [references/context.md](references/context.md).
-   Nothing found? The answer opens with one line saying so, before the first section header ("não achei docs de planejamento; explicando pelo código", in the user's language), then reasons from the code.
+   Nothing found? The answer opens with one line saying so, before the first section header ("No planning docs found; explaining from the code", in the user's language), then reasons from the code.
 
 3. **Fill the template for the level**, in the user's language (headers included). Templates and a worked example are in [references/levels.md](references/levels.md). The `dev` template is below.
 
-4. **Close with `➡️ Próximo passo`** — one line naming where the task resumes. The explanation does not redo, re-run, or re-implement anything already done. If the task was already in progress and the user has not asked to pause, continue it after this line.
+4. **Close with `➡️ Next step`** — one line naming where the task resumes. The explanation does not redo, re-run, or re-implement anything already done. If the task was already in progress and the user has not asked to pause, continue it after this line.
 
 ## The `dev` template
 
 ```
-🧠 O que estamos fazendo
+🧠 What we're doing
 <1–2 sentences. Names the story / file / function / command being touched right now.>
 
-🎯 Por quê (o quadro maior)
+🎯 Why (the bigger picture)
 <At most 4 sentences: the goal this serves; where it sits (epic, roadmap,
  dependency chain); what breaks or gets harder without it; why now and not later.>
 
-🪄 Analogia
+🪄 Analogy
 <2–3 sentences. One real-world analogy, each part mapped to one part of this step.>
 
-👀 Olho de sênior
+👀 Senior's eye
 <2 bullets, one sentence each: trade-offs or pitfalls a senior would watch for right here.>
 
-🤔 Pra pensar
+🤔 One question
 <One question the user can answer to check they got it. Omit if it would be forced.>
 
-➡️ Próximo passo: <one line>
+➡️ Next step: <one line>
 ```
 
 Length: about 250 words. Cut, do not compress.
@@ -64,7 +64,7 @@ Length: about 250 words. Cut, do not compress.
 - which later stories are blocked by it;
 - the acceptance criterion that carries the motivation.
 
-This holds at `dev` and `zero`. At `zero` the same four facts are told in the analogy's terms ("a tela 5.7 não pode começar enquanto isso não existir"), not dropped.
+This holds at `dev` and `zero`. At `zero` the same four facts are told in the analogy's terms ("the 5.7 screen cannot start until this exists"), not dropped.
 
 ## Honesty
 
@@ -77,7 +77,7 @@ If the motivation is weak, unclear, or the step looks unnecessary, the "why" slo
 | Generic lecture ("migrations let you evolve the schema") | Name the table, the story, the story that depends on it |
 | Analogy that decorates instead of maps | Each part of the analogy = one part of the step; if it does not map, choose another |
 | Answering from the conversation alone when `docs/stories/` or a PRD exists | Read the story + its epic first |
-| Replying in English because the invocation itself (`/dumb terms`) carried no words in the user's language | Language comes from the conversation and the project's docs, not from the trigger message |
+| Replying in English to a user who wrote in another language | Language comes from the conversation and the project's docs, not from the trigger message |
 | Reasoning from the code without saying the planning docs were missing | That line opens the answer, before the first section header |
-| Continuing to implement inside the explanation | The explanation ends at `➡️ Próximo passo`; work resumes after it |
+| Continuing to implement inside the explanation | The explanation ends at `➡️ Next step`; work resumes after it |
 | Past ~300 words at `dev` | Cut to ~250 for `dev`, ~300 for `zero`; the `🎯` slot is where the padding is |
