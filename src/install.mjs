@@ -1,6 +1,8 @@
 import { existsSync } from "node:fs";
+import { cp, mkdir, rm } from "node:fs/promises";
 import { homedir } from "node:os";
-import { join, resolve } from "node:path";
+import { dirname, join, resolve } from "node:path";
+import { fileURLToPath } from "node:url";
 import { AGENTS, AGENT_IDS, SKILL_NAME, globalSkillsDir } from "./agents.mjs";
 
 /** ["codex", "claude-code", "all"] → ["claude", "cursor", ...] in AGENT_IDS order. Throws on unknown names. */
@@ -35,4 +37,46 @@ export function resolveTargets({ agents, scope, env = process.env, home = homedi
     byPath.get(path).agents.push(id);
   }
   return [...byPath.values()];
+}
+
+export const SKILL_SOURCE = resolve(dirname(fileURLToPath(import.meta.url)), "..", "skills", SKILL_NAME);
+
+/** Copy the skill into each target. Existing copies are replaced (status "updated"). */
+export async function install(targets, { source = SKILL_SOURCE, dryRun = false } = {}) {
+  if (!existsSync(join(source, "SKILL.md"))) {
+    throw new Error(`Skill files missing at ${source} (broken package?)`);
+  }
+  const results = [];
+  for (const target of targets) {
+    const status = existsSync(target.path) ? "updated" : "installed";
+    try {
+      if (!dryRun) {
+        await mkdir(dirname(target.path), { recursive: true });
+        await rm(target.path, { recursive: true, force: true });
+        await cp(source, target.path, { recursive: true });
+      }
+      results.push({ ...target, status });
+    } catch (error) {
+      results.push({ ...target, status: "failed", error: error.message });
+    }
+  }
+  return results;
+}
+
+/** Remove the skill directory from each target; never touches the parent. */
+export async function uninstall(targets, { dryRun = false } = {}) {
+  const results = [];
+  for (const target of targets) {
+    if (!existsSync(target.path)) {
+      results.push({ ...target, status: "skipped" });
+      continue;
+    }
+    try {
+      if (!dryRun) await rm(target.path, { recursive: true, force: true });
+      results.push({ ...target, status: "removed" });
+    } catch (error) {
+      results.push({ ...target, status: "failed", error: error.message });
+    }
+  }
+  return results;
 }

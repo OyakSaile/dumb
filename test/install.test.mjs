@@ -1,9 +1,10 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { mkdtemp, mkdir } from "node:fs/promises";
+import { existsSync } from "node:fs";
+import { mkdtemp, mkdir, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
-import { detectAgents, normalizeAgents, resolveTargets } from "../src/install.mjs";
+import { detectAgents, normalizeAgents, resolveTargets, install, uninstall, SKILL_SOURCE } from "../src/install.mjs";
 
 const ALL = ["claude", "cursor", "codex", "opencode"];
 const tmp = () => mkdtemp(join(tmpdir(), "total-dumb-"));
@@ -51,4 +52,52 @@ test("detectAgents: only agents whose config dir exists", async () => {
   const env = { CODEX_HOME: join(home, "custom-codex") };
   await mkdir(env.CODEX_HOME, { recursive: true });
   assert.deepEqual(detectAgents({ env, home }), ["claude", "codex", "opencode"]);
+});
+
+test("SKILL_SOURCE points at the packaged skill", () => {
+  assert.ok(SKILL_SOURCE.endsWith(join("skills", "dumb")));
+  assert.ok(existsSync(join(SKILL_SOURCE, "SKILL.md")));
+});
+
+test("install copies the skill; second run reports updated and drops stale files", async () => {
+  const home = await tmp();
+  const targets = resolveTargets({ agents: ["claude"], scope: "global", env: {}, home, cwd: home });
+  const first = await install(targets);
+  assert.equal(first[0].status, "installed");
+  const dest = targets[0].path;
+  assert.ok(existsSync(join(dest, "SKILL.md")));
+  assert.ok(existsSync(join(dest, "references", "levels.md")));
+  assert.ok(existsSync(join(dest, "references", "context.md")));
+
+  await writeFile(join(dest, "stale.md"), "old");
+  const second = await install(targets);
+  assert.equal(second[0].status, "updated");
+  assert.ok(!existsSync(join(dest, "stale.md")));
+});
+
+test("install dryRun writes nothing but reports the status it would have", async () => {
+  const home = await tmp();
+  const targets = resolveTargets({ agents: ["cursor"], scope: "global", env: {}, home, cwd: home });
+  const result = await install(targets, { dryRun: true });
+  assert.equal(result[0].status, "installed");
+  assert.ok(!existsSync(targets[0].path));
+});
+
+test("install with a missing source rejects clearly", async () => {
+  await assert.rejects(install([], { source: "/definitely/not/here" }), /Skill files missing/);
+});
+
+test("uninstall removes dumb/ only, leaves siblings, skips when absent", async () => {
+  const home = await tmp();
+  const targets = resolveTargets({ agents: ["claude"], scope: "global", env: {}, home, cwd: home });
+  await install(targets);
+  await mkdir(join(home, ".claude/skills/other-skill"), { recursive: true });
+
+  const removed = await uninstall(targets);
+  assert.equal(removed[0].status, "removed");
+  assert.ok(!existsSync(targets[0].path));
+  assert.ok(existsSync(join(home, ".claude/skills/other-skill")));
+
+  const again = await uninstall(targets);
+  assert.equal(again[0].status, "skipped");
 });
