@@ -38,7 +38,7 @@ An agent is shipping features faster than anyone can read them, and the system d
 
 3. **Find the context, then the parts.** Search order and what to extract are in [references/context.md](references/context.md). Then list the parts this feature touches, by their real names: components, services, queues, workers, agents, tables, endpoints, jobs. Take them from the story or spec and from the code, never from imagination.
 
-4. **Write the document** at `docs/dumb/<yyyy-mm-dd>-<feature-slug>.md`, creating the folder if needed and overwriting any existing file for the same feature. The template, the diagram rules and a worked excerpt are in [references/document.md](references/document.md). Skip this step at `terms`.
+4. **Write the document.** If `docs/dumb/*-<feature-slug>.md` already exists, overwrite that file and keep its name, so re-running `/dumb` on the same feature updates one document instead of adding another; otherwise create `docs/dumb/<yyyy-mm-dd>-<feature-slug>.md`, creating the folder if needed. The template, the diagram rules and a worked excerpt are in [references/document.md](references/document.md). Skip this step at `terms`.
 
 5. **Reply in chat**, at most 100 words plus the path. Shapes and dialogue rules are in [references/levels.md](references/levels.md).
 
